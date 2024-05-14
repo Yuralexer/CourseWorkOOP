@@ -9,6 +9,6 @@
 class Application : public baseClass {
 public:
 	Application(baseClass* parent);
-	string build();
-	int start_app(string failcoordinate = "");
+	void build();
+	int start_app();
 };

@@ -10,6 +10,8 @@ private:
 	string name;
 	baseClass* parent = nullptr;
 	vector <baseClass*> children;
+
+protected:
 	int readyCode = 0;
 
 public:

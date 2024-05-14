@@ -6,15 +6,11 @@ using namespace std;
 
 Application::Application(baseClass* parent) : baseClass(parent) {}
 
-int Application::start_app(string failcoordinate) { /* Edited */
+int Application::start_app() {
+	if (readyCode == 1) return 1;
 	cout << "Object tree";
 	printNames();
 	cout << endl;
-	if (failcoordinate.size() != 0)
-	{
-		cout << "The head object " << failcoordinate << " is not found";
-		return 1;
-	}
 	string commandCode, secondParameter, coordObject;
 	baseClass* pointer = this;
 	baseClass* temp;
@@ -28,9 +24,9 @@ int Application::start_app(string failcoordinate) { /* Edited */
 			break;
 		}
 		cin >> secondParameter;
-		temp = pointer->findObjectByCoordinate(secondParameter);
 		if (commandCode == "SET")
 		{
+			temp = pointer->findObjectByCoordinate(secondParameter);
 			if (temp != nullptr)
 			{
 				pointer = temp;
@@ -43,6 +39,7 @@ int Application::start_app(string failcoordinate) { /* Edited */
 		}
 		if (commandCode == "FIND")
 		{
+			temp = pointer->findObjectByCoordinate(secondParameter);
 			if (temp != nullptr)
 				cout << secondParameter << "     Object name: " << temp->getName() << endl;
 			else
@@ -50,6 +47,7 @@ int Application::start_app(string failcoordinate) { /* Edited */
 		}
 		if (commandCode == "MOVE")
 		{
+			temp = pointer->findObjectByCoordinate(secondParameter);
 			if (pointer->changeNewParent(temp))
 				cout << "New head object: " << temp->getName() << endl;
 			else if (temp == nullptr) cout << secondParameter << "     Head object is not found\n";
@@ -80,7 +78,7 @@ int Application::start_app(string failcoordinate) { /* Edited */
 	return 0;
 }
 
-string Application::build() { /* Edited */
+void Application::build() {
 	baseClass* selectedObject = this;
 	string parentName, childName, parentCoordinate;
 	int classNum;
@@ -88,7 +86,7 @@ string Application::build() { /* Edited */
 	setName(parentName);
 	while (true) {
 		cin >> parentCoordinate;
-		if (parentCoordinate == "endtree") return "";
+		if (parentCoordinate == "endtree") break;
 		cin >> childName >> classNum;
 		if (classNum < 2 || classNum > 6) continue;
 		selectedObject = findObjectByCoordinate(parentCoordinate);
@@ -119,7 +117,14 @@ string Application::build() { /* Edited */
 			}
 			else cout << parentCoordinate << "    Dubbing the names of subordinate objects\n";
 		}
-		else return parentCoordinate;
+		else
+		{
+			cout << "Object tree";
+			printNames();
+			cout << endl;
+			cout << "The head object " << parentCoordinate << " is not found";
+			setReadyCode(1);
+			break;
+		}
 	}
 }
-

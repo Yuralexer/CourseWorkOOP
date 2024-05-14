@@ -19,8 +19,9 @@ bool baseClass::setName(string newName) {
 	return true;
 }
 
-void baseClass::printNames(int countSpaces) /* Edited */
+void baseClass::printNames(int countSpaces)
 {
+
 	cout << endl << string(countSpaces, ' ') << this->getName();
 	for (baseClass* child : this->children)
 		child->printNames(countSpaces + 4);
@@ -67,16 +68,16 @@ void baseClass::setReadyCode(int code)
 	}
 }
 
-void baseClass::printReadyStatus(int countSpaces) /* Edited */
+void baseClass::printReadyStatus(int countSpaces)
 {
 	cout << endl << string(countSpaces, ' ') << this->getName();
 	if (this->readyCode) cout << " is ready";
 	else cout << " is not ready";
 	for (baseClass* child : this->children)
-		child->printNames(countSpaces + 4);
+		child->printReadyStatus(countSpaces + 4);
 }
 
-baseClass* baseClass::findObjectByCoordinate(string coordinate) /* Added */
+baseClass* baseClass::findObjectByCoordinate(string coordinate)
 {
 	if (coordinate == "/")
 	{
@@ -110,7 +111,7 @@ baseClass* baseClass::findObjectByCoordinate(string coordinate) /* Added */
 	}
 }
 
-void baseClass::removeChild(string name) /* Added */
+void baseClass::removeChild(string name)
 {
 	for (int i = 0; i < children.size(); i++)
 	{
@@ -122,12 +123,12 @@ void baseClass::removeChild(string name) /* Added */
 	}
 }
 
-bool baseClass::changeNewParent(baseClass* newParent) /* Added */
+bool baseClass::changeNewParent(baseClass* newParent)
 {
 	if (this->getParent() == nullptr) return false;
 	if (newParent == nullptr) return false;
 	if (newParent->getChild(this->getName()) != nullptr) return false;
-	if (this->goUpToTheObject(newParent->getName()) != nullptr) return false;
+	if (this->goUpToTheObject(newParent->getName()) == newParent) return false;
 
 	this->getParent()->removeChild(this->getName());
 	this->parent = newParent;
